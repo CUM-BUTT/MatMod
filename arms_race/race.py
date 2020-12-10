@@ -47,8 +47,9 @@ class Model:
 
     def Run(self, iteration_count=100):  # Run model
         for t in range(iteration_count):
-            self.Iteration()
             self.SaveStory()
+            self.Iteration()
+
         self.story = np.rot90(self.story)
         print('iterations end')
 
@@ -58,7 +59,6 @@ class Model:
 
         plt.axis((0, 2, 0, 2))
         plt.plot(x, y, )
-        plt.show()
 
     def MakePoints(self):
         max, eps = 1000, 0.0001
@@ -85,7 +85,7 @@ class Model:
         #x = a*a y=b*b z=m + m
         ax.scatter(self.a1*self.a2, self.b1 * self.b2, self.m1+self.m2, c=finals, s=3, alpha=0.2)
         plt.savefig('points')
-        plt.show()
+
 
 def GetCommonSituations():
     # стационарная точка для любых a0*a1 < b0*b1
@@ -121,9 +121,13 @@ def GetAllSituations():
 
     return model
 
+GetCommonSituations()
+plt.show()
 model = GetAllSituations()
 model.MakePlot()
+plt.show()
 model.MakePoints()
+plt.show()
 
 
 

@@ -33,8 +33,9 @@ class Model:
 
     def Run(self, iteration_count=100):  # Run model
         for t in range(iteration_count):
-            self.Iteration()
             self.SaveStory()
+            self.Iteration()
+
         self.story = np.rot90(self.story)
         print('iterations end')
 
@@ -44,7 +45,6 @@ class Model:
 
         plt.axis((0, 100, 0, 100))
         plt.plot(x, y, )
-        plt.show()
 
     def MakePoints(self):
         eps = 0.01
@@ -63,8 +63,7 @@ class Model:
 
 
         plt.scatter(self.a, self.b * self.c * self.d,c=colors, s=3)
-        plt.savefig('points')
-        plt.show()
+
 
 
 def GetAllSituations():
@@ -83,5 +82,9 @@ def GetAllSituations():
     return model
 
 model = GetAllSituations()
+
 model.MakePlot()
+plt.show()
+
 model.MakePoints()
+plt.show()
