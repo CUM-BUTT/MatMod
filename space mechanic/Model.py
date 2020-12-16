@@ -12,8 +12,8 @@ class Model:
     def __init__(self, pos, v, m):
         self.dt = 0.01
         self.time = 0
-        self.v = np.array(v)
-        self.degree = 3
+        self.v = np.array(v, dtype=float)
+        self.degree = 2
 
         self.story = []
 
@@ -26,24 +26,26 @@ class Model:
         self.zero_diag = np.array([[[mj, mj] for j, mj in enumerate(mi)]
                            for i, mi in enumerate(m)])
 
-        self.pos = np.array(pos)
+        self.pos = np.array(pos, dtype=float)
 
     def SaveStory(self):
-        pass
-        #self.story += [self.pos.copy()]
+        self.story += [self.pos.copy()]
 
-    def Iteration(self):
+    def Iteration0(self):
         self.time += self.dt
-        vectors = np.array([[ np.abs(u - v)
+        vectors = np.array([[ u-v if i != j else [1, 1]
                                 for j, v in enumerate(self.pos)]
                                 for i, u in enumerate(self.pos)])
-        #magnitudes = np.linalg.norm(vectors, axis=2)
-        #vectors = vectors.
 
         dv = self.m / (vectors ** self.degree)
-        dv = np.sum(dv, axis=(0))
+        for i, __ in enumerate(dv):
+            dv[i, i] = np.array([0, 0], dtype=float)
+        dv = np.sum(dv, axis=0)
         self.v += dv * self.dt
         self.pos += self.v * self.dt
+
+    def Iteration(self):
+
 
     def Run(self, iteration_count=100):  # Run model
         for t in range(iteration_count):
@@ -53,10 +55,12 @@ class Model:
         print('iterations end')
 
     def MakePlot(self):
+        self.story = np.rot90(self.story)[0]
+        self.story = np.rot90(self.story)
         x = self.story[0]
         y = self.story[1]
 
-        plt.axis((0, 100, 0, 100))
+        #plt.axis((0, 10, 0, 10))
         plt.plot(x, y, )
 
     def MakePoints(self):
@@ -91,5 +95,8 @@ magnitudes = np.linalg.norm(distances, axis=(2))
 print(magnitudes)
 """
 
-m = Model(pos=[[1, 0], [0, 1], [3, 1], [3, 5]], m=[1, 2, 3, 4], v=[[1, 0], [0, 1], [3, 1], [3, 5]])
-m.Run()
+#m = Model(pos=[[1, 1], ], m=[1, ], v=[[0, 0.01], ])
+m = Model(pos=[[1, 1],[1,10] ], m=[1, 1], v=[[0, 0.0], [0, 0.2], ])
+m.Run(100)
+m.MakePlot()
+plt.show()

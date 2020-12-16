@@ -36,6 +36,7 @@ class Model:
             self.SaveStory()
             self.Iteration()
 
+        story = np.array(self.story)
         self.story = np.rot90(self.story)
         print('iterations end')
 
